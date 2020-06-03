@@ -62,3 +62,9 @@ button{
     margin-left: 31%;
 
 }
+
+.chronometre{
+    border: 2px solid black;
+    padding:5px;
+    background-color:yellowgreen;
+}
