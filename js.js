@@ -1,70 +1,134 @@
 class Game{
 
     constructor(){
-this.cards = document.querySelectorAll(".game-card");
-this.cardFace;
-this.cardBack;
-this.flippedCard = false;
-this.lock = false;
-this.button = document.querySelector("button");
-
-}
-
-flipCard(){
-    if(lock) return;
-   this.classList.toggle('flip');
-  
-   if(!flippedCard){
-       this.flippedCard = true;
-       this.cardFace = this;
-   }
-   else{
+    this.cards = document.querySelectorAll(".game-card");
+    this.cardFace;
+    this.cardBack;
+    this.card;
     this.flippedCard = false;
-    this.cardBack = this; 
+    this.lock = false;
+    this.button = document.querySelector("button");
 
+    /*this.span = document.getElementsByTagName("span");
+    this.time;
+    this.ms=0,
+    this.s=0;
+    this.mn=0;
+    this.h=0;*/
 
-    if(this.cardFace.dataset.card === this.cardBack.dataset.card){
-        this.cardFace.removeEventListener('click', flipCard);
-        this.cardBack.removeEventListener('click', flipCard);
-    }else{
-        this.lock = true;
-        setTimeout(function(){
-        this.cardFace.classList.remove('flip');
-        this.cardBack.classList.remove('flip');
-        this.lock = false;
-        console.log("cardFace");
+    }
 
-    }, 1500);}
-   }
-  
-}
+    flipCard(event){
+        if(this.lock) return;
+        //event.target.classList.toggle('flip');
 
+        if(!this.flippedCard){
+            this.flippedCard = true;
+            this.cardFace = this.card;
+            this.cardFace.classList.toggle('flip')
+        //console.log(this.cardFace.getAttribute('data-card'))
+        }
+        else{
+            this.flippedCard = false;
+            this.cardBack = this.card; 
+            this.cardBack.classList.toggle('flip')
 
+        
+        //console.log(this.cardBack.getAttribute('data-card'))
 
-// random cards après victoire
+            if(this.cardFace.dataset.card === this.cardBack.dataset.card){
+               
+                
+                this.cardFace.removeEventListener('click', () => {this.flipCard()});
+                this.cardBack.removeEventListener('click', () => {this.flipCard()});
+            }else{
+                this.lock = true;
+                setTimeout(() => {
+                this.cardFace.classList.remove('flip');
+                this.cardBack.classList.remove('flip');
+                this.lock = false;
 
-shuffle(){
+            }, 1500);}
+        }
     
-    this.cards.forEach(card => {
-        var random = Math.floor(Math.random()*8);
-        card.style.order = random;
-        console.log("salut");
-    })
-}
+    }
+
+    // random cards après victoire
+
+    shuffle(){
+        if(this.cardFace.classList.contains('flip') && this.cardBack.classList.contains('flip')){
+         
+        this.cards.forEach(card => {
+            card.classList.remove('flip');
+            var random = Math.floor(Math.random()*8);
+            card.style.order = random;
+
+        })}
+    }
+
+    start(){
+        this.cards.forEach(card =>  {card.addEventListener('click', (event) => {
+            this.card = card; 
+            this.flipCard(event)
+            
+        })});
+
+    }
+
+    random(){
+        this.button.addEventListener('click', () => {this.shuffle()});
+        
+    }
 
 
+   /* startTimer(){
+        this.time =setInterval(this.update,100);
+        this.cards.disabled=true;
+       this.cards.forEach(card => card.addEventListener('click', () => {this.startTimer()}));
 
+       }
+
+
+    update(){
+     this.ms+=1;
+        if(this.ms==10){
+            this.ms=1;
+            this.s+=1;
+        }
+        if(this.s==60){
+            this.s=0;
+            this.mn+=1;
+        }
+        if(this.mn==60){
+            this.mn=0;
+            this.h+=1;
+        }
+
+        console.log(this.span[0]);
+        
+        this.span[0].innerHTML=this.h+" h";
+        this.span[1].innerHTML=this.mn+" min";
+        this.span[2].innerHTML=this.s+" s";
+        this.span[3].innerHTML=this.ms+" ms";
+        
+
+    }*/
+    
 }
  
-let game = new Game()
-cards.forEach(card => card.addEventListener('click', flipCard));
-button.addEventListener('click', shuffle); 
+let game = new Game();
+game.start();
+game.random();
+
+
+
+ 
 
 
 
 
-/*// timer
-var span = document.getElementsByTagName("span");
+// timer
+/*var span = document.getElementsByTagName("span");
 var time;
 var ms=0,s=0,mn=0,h=0;
 
